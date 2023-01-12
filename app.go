@@ -2,8 +2,15 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"errors"
+	"math/rand"
+	"time"
 )
+
+type DivisionInput struct {
+	X int `json:"x"`
+	Y int `json:"y"`
+}
 
 // App struct
 type App struct {
@@ -12,6 +19,7 @@ type App struct {
 
 // NewApp creates a new App application struct
 func NewApp() *App {
+	rand.Seed(time.Now().Unix())
 	return &App{}
 }
 
@@ -21,7 +29,20 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
+func (a *App) GenerateDivision() (DivisionInput, error) {
+	return DivisionInput{generateInRange(10000, 99999), generateInRange(10, 99)}, nil
+}
+
+func (a *App) CheckDivision(x, y, v, remainder int) (bool, error) {
+	if y == 0 {
+		return false, errors.New("division by zero")
+	}
+	r := x / y
+	m := x % y
+
+	return (r == v && m == remainder), nil
+}
+
+func generateInRange(min, max int) int {
+	return min + rand.Intn(max-min+1)
 }
