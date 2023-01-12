@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 
 import Answer from "../Answer";
 
@@ -14,6 +15,7 @@ export function Division({a, b, correctAnswer, onCheck, onGenerate}: DivisionPro
   const [result, setResult] = useState(0);
   const [remainder, setRemainder] = useState(0);
 
+  const {t, i18n} = useTranslation();
   useEffect(() => {
     setResult(0);
     setRemainder(0);
@@ -22,14 +24,14 @@ export function Division({a, b, correctAnswer, onCheck, onGenerate}: DivisionPro
   return (
     <div className="prose p-4 flex flex-col gap-4">
       <div>
-        <h3>Divisioni</h3>
+        <h3>{t("divisions.title")}</h3>
         <p className="text-center text-xl">
           {a} : {b} = ?
         </p>
       </div>
       <div className="form-control">
         <label className="label">
-          <span className="label-text">Risultato</span>
+          <span className="label-text">{t("divisions.result")}</span>
         </label>
         <input
           type="number"
@@ -41,7 +43,7 @@ export function Division({a, b, correctAnswer, onCheck, onGenerate}: DivisionPro
       </div>
       <div className="form-control">
         <label className="label">
-          <span className="label-text">Resto</span>
+          <span className="label-text">{t("divisions.remainder")}</span>
         </label>
         <input
           type="number"
@@ -54,10 +56,13 @@ export function Division({a, b, correctAnswer, onCheck, onGenerate}: DivisionPro
 
       <div className="flex gap-8 justify-center">
         <button className="btn" onClick={onGenerate}>
-          Nuovo
+          {t("divisions.new")}
         </button>
-        <button className="btn btn-primary" onClick={() => onCheck(result, remainder)}>
-          Prova
+        <button
+          className="btn btn-primary"
+          onClick={() => onCheck(result, remainder)}
+        >
+          {t("divisions.try")}
         </button>
       </div>
 
